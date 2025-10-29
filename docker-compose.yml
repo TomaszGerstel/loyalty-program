@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  frontend:
+    container_name: loyalty-frontend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # depends_on:
+    #   - backend
+    networks:
+      - nginx-network
+
+    ports:
+      - "80:80"
+
+networks:
+  nginx-network:
+    external: true
