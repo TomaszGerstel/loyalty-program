@@ -11,9 +11,6 @@ services:
     networks:
       - nginx-network
 
-    ports:
-      - "80:80"
-
 networks:
   nginx-network:
     external: true
