@@ -1,11 +1,12 @@
 version: '3.8'
 
 services:
-  frontend:
+  frontend-loyalty:
     container_name: loyalty-frontend
     build:
       context: .
       dockerfile: Dockerfile
+    restart: unless-stopped
     # depends_on:
     #   - backend
     networks:

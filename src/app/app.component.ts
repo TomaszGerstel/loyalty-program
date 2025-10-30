@@ -91,7 +91,7 @@ export class AppComponent {
   reset() {
     this.activePrefix = null;
     this.activeOperator = null;
-    // this.timer.reset();
+    this.timer.start();
     this.rows[0].boxes = ['06', '90', '', '', ''];
     this.rows[2].boxes = ['', ''];
     this.lastResult = null;
