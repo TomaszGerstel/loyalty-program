@@ -1,8 +1,8 @@
 # Stage 1: Build Angular app
 FROM node:alpine AS build
 WORKDIR /app
-# COPY package*.json ./
-COPY . /app
+COPY package*.json ./
+# COPY . /app
 RUN npm install -g @angular/cli
 RUN npm install
 COPY . .

@@ -1,56 +1,13 @@
-<mat-toolbar color="primary">Loyalty Program</mat-toolbar>
+<div class="app-container">
+  <mat-toolbar color="primary">
+    Loyalty Program
+    <span class="spacer"></span>
+    <button mat-button routerLink="/">Form</button>
+    <button mat-button routerLink="/summary">Summary</button>
+  </mat-toolbar>
 
-<div class="layout-container">
-  <div class="display-panel">
-    <!-- Row 1: prefix + operator + 3 number boxes -->
-    <div class="entry-row">
-      <div
-        class="cell locked"
-        [class.selected]="activePrefix === '06'"
-        (click)="selectPrefix('06')"
-      >06</div>
+  <main class="">
+    <router-outlet></router-outlet>
+  </main>
 
-      <div
-        class="cell locked"
-        [class.selected]="activeOperator === '90'"
-        (click)="selectOperator('90')"
-      >90</div>
-
-      <div class="cell editable" *ngFor="let box of rows[0].boxes.slice(2)">
-        {{ box || '__' }}
-      </div>
-    </div>
-
-    <!-- Row 2: another prefix/operator option -->
-    <div class="entry-row">
-      <div
-        class="cell locked"
-        [class.selected]="activePrefix === '07'"
-        (click)="selectPrefix('07')"
-      >07</div>
-
-      <div
-        class="cell locked"
-        [class.selected]="activeOperator === '96'"
-        (click)="selectOperator('96')"
-      >96</div>
-    </div>
-
-    <!-- Row 3: custom operator -->
-    <div class="entry-row">
-      <div class="cell spacer"></div>
-      <div class="cell editable">
-        {{ rows[2].boxes[1] || '__' }}
-      </div>
-    </div>
-  </div>
-
-  <!-- Right side keypad -->
-  <div class="keypad-panel">
-    <app-keypad (keyPressed)="onKeyPressed($event)"></app-keypad>
-  </div>
-</div>
-
-<div class="result" *ngIf="lastResult">
-  {{ lastResult.phoneNumber }} — {{ lastResult.duration.toFixed(2) }}s
 </div>

@@ -1,70 +1,12 @@
-.layout-container {
+.app-container {
+  max-width: 780px;     /* Adjust to your desired tablet width */
+  margin: 0 auto;       /* Center horizontally */
+  padding: 16px;        /* Some breathing room */
   display: flex;
-  grid-template-columns: 2fr 1fr;
-  gap: 2rem;
-  margin: 2rem;
-  justify-content: center;
-}
-
-.entry-row {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-  justify-content: left;
-}
-
-.cell {
-  width: 64px;
-  height: 64px;
-  display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  font-size: 2rem;
-  background: #f5f5f5;
-  border-radius: 10px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  transition: all 0.2s ease;
 }
 
-.cell.locked {
-  cursor: pointer;
-  background: #e3f2fd;
-}
-.cell.locked:hover {
-  background: #bbdefb;
-}
-.cell.selected {
-  border: 1px solid #1976d2;
-  box-sizing: border-box;
-  box-shadow: 1px 1px #888888;
-  background-color: #bbdefb;
-}
-.cell.editable {
-  background: #fff;
-}
-.cell.spacer {
-  visibility: hidden;
-  width: 64px;
-}
-.result {
-  text-align: center;
-  margin-top: 1rem;
-  color: #43a047;
-  font-size: 1.1rem;
-}
-
-@media (max-width: 650px) {
-  .layout-container {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .cell {
-    width: 48px;
-    height: 48px;
-    font-size: 1.2rem;
-  }
-  .cell.spacer {
-    width: 48px;
-  }
+.spacer {
+  flex: 1;
 }
