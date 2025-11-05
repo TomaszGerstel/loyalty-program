@@ -16,4 +16,9 @@ export class StorageService {
   getEntries() {
     return JSON.parse(localStorage.getItem('entries') || '[]');
   }
+
+  clear() {
+    localStorage.removeItem('entries');
+  }
+
 }

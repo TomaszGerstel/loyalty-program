@@ -1,0 +1,73 @@
+
+<div class="layout-container">
+  <div class="display-panel">
+    <!-- Row 1: prefix + operator + 3 number boxes -->
+    <div class="entry-row numbered">
+      <div class="cell-wrapper" *ngFor="let box of rows[0].boxes; let i = index">
+        <div class="cell-label">{{ i + 1 }}</div>
+        <div
+          class="cell"
+          [class.locked]="i < rows[0].locked"
+          [class.selected]="
+            (i === 0 && activePrefix === box) ||
+            (i === 1 && activeOperator === box)
+          "
+          (click)="i === 0 ? selectPrefix(box) : (i === 1 ? selectOperator(box) : null)"
+        >
+          {{ box || '__' }}
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="entry-row">
+      <div
+        class="cell locked"
+        [class.selected]="activePrefix === '06'"
+        (click)="selectPrefix('06')"
+      >06</div>
+
+      <div
+        class="cell locked"
+        [class.selected]="activeOperator === '90'"
+        (click)="selectOperator('90')"
+      >90</div>
+
+      <div class="cell editable" *ngFor="let box of rows[0].boxes.slice(2)">
+        {{ box || '__' }}
+      </div>
+    </div> -->
+
+    <!-- Row 2: another prefix/operator option -->
+    <div class="entry-row">
+      <div
+        class="cell locked"
+        [class.selected]="activePrefix === '07'"
+        (click)="selectPrefix('07')"
+      >07</div>
+
+      <div
+        class="cell locked"
+        [class.selected]="activeOperator === '96'"
+        (click)="selectOperator('96')"
+      >96</div>
+    </div>
+
+    <!-- Row 3: custom operator -->
+    <div class="entry-row">
+      <div class="cell spacer"></div>
+      <div class="cell"
+      [class.selected]="customOperatorMode">
+        {{ rows[2].boxes[1] || '__' }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Right side keypad -->
+  <div class="keypad-panel">
+    <app-keypad (keyPressed)="onKeyPressed($event)"></app-keypad>
+  </div>
+</div>
+
+<div class="result" *ngIf="lastResult">
+  {{ lastResult.phoneNumber }} — {{ lastResult.duration.toFixed(2) }}s
+</div>
