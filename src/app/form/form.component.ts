@@ -11,12 +11,11 @@ import { StorageService } from '../service/storage.service';
 export class FormComponent {
   activePrefix: string | null = null;
   activeOperator: string | null = null;
-  customOperatorMode = false;
 
   rows = [
-    { id: 1, boxes: ['06', '90', '', '', ''], locked: 2 },
-    { id: 2, boxes: ['07', '96'], locked: 2 },
-    { id: 3, boxes: ['', ''], locked: 1 }
+    { id: 1, boxes: ['', '', '', '', ''], locked: 2 },
+    { id: 2, boxes: ['06', '90'], locked: 2 },
+    { id: 3, boxes: ['07', '96'], locked: 2 }
   ];
 
   lastResult: { phoneNumber: string; duration: number } | null = null;
@@ -26,17 +25,22 @@ export class FormComponent {
   selectPrefix(prefix: string) {
     this.reset();
     this.activePrefix = prefix;
+    this.rows[0].boxes[0] = prefix;
   }
 
   selectOperator(operator: string) {
+    if (!this.activePrefix) {
+      alert('Please select a prefix first');
+      return;
+    }
     this.rows[2].boxes = ['', ''];
-    this.customOperatorMode = false;
     this.activeOperator = operator;
+    this.rows[0].boxes[1] = operator;
   }
 
   onKeyPressed(digit: string) {
 
-    if (this.rows[0].boxes.slice(2).every(b => (b || '').length === 2)) {
+    if (this.rows[0].boxes.every(b => (b || '').length === 2)) {
       // all number boxes filled
       return;
     }
@@ -58,10 +62,9 @@ export class FormComponent {
     if (!this.timer.isRunning()) this.timer.start();
 
     if (!this.activeOperator) {
-      // no operator selected > fill custom operator (row 3, box 1)
-      const customRow = this.rows[2];
+      // no operator selected > fill custom operator (row 1, box 2)
+      const customRow = this.rows[0];
       const current = customRow.boxes[1] || '';
-      this.customOperatorMode = true;
       if (current.length < 2) {
         customRow.boxes[1] = current + digit;
         return; // don't start filling number until operator ready
@@ -76,12 +79,12 @@ export class FormComponent {
 
     // check if number entry complete
     const numberReady = mainRow.boxes.slice(startIndex).every(b => (b || '').length === 2);
-    const operatorReady = this.activeOperator || (this.rows[2].boxes[1]?.length === 2);
+    const operatorReady = this.activeOperator || (this.rows[0].boxes[1]?.length === 2);
 
     if (numberReady && operatorReady) {
       const duration = this.timer.stop();
       const prefix = this.activePrefix;
-      const operator = this.activeOperator || this.rows[2].boxes[1];
+      const operator = this.activeOperator || this.rows[0].boxes[1];
       const rest = mainRow.boxes.slice(startIndex).join('');
       const result = `${prefix}${operator}${rest}`;
 
@@ -89,20 +92,14 @@ export class FormComponent {
       this.lastResult = { phoneNumber: result, duration };
 
       // alert(`✅ ${result} entered in ${duration.toFixed(2)}s`);
-
-      // reset
-      // for (let i = startIndex; i < mainRow.boxes.length; i++) mainRow.boxes[i] = '';
-      // this.rows[2].boxes[1] = '';
     }
   }
 
   reset() {
     this.activePrefix = null;
     this.activeOperator = null;
-    this.rows[0].boxes = ['06', '90', '', '', ''];
-    this.rows[2].boxes = ['', ''];
+    this.rows[0].boxes = ['', '', '', '', ''];
     this.lastResult = null;
-    this.customOperatorMode = false;
     this.timer.start();
   }
 
@@ -120,9 +117,14 @@ export class FormComponent {
     }
 
     // if no operator selected, backspace custom operator
-    if (!this.activeOperator && this.rows[2].boxes[1]) {
-      const cur = this.rows[2].boxes[1];
-      this.rows[2].boxes[1] = cur.slice(0, -1);
+    if (this.rows[0].boxes[1]) {
+      const cur = this.rows[0].boxes[1];
+      this.rows[0].boxes[1] = cur.slice(0, -1);
+      this.activeOperator = null;
+    }
+    else { // backspace prefix
+      this.activePrefix = null;
+      this.rows[0].boxes[0] = '';
     }
   }
 }
