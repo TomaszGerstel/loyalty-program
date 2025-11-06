@@ -63,9 +63,10 @@
 }
 
 .hidden {
-  visibility: hidden;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
-
 
 .result {
   text-align: center;

@@ -27,12 +27,11 @@ export class FormComponent {
   constructor(private timer: TimerService, private storage: StorageService) {}
 
   selectPrefix(prefix: string) {
+    // hide incompatible operator boxes
+    this.visibleOperatorsBoxes = prefix !== '07';
     this.reset();
     this.activePrefix = prefix;
     this.rows[0].boxes[0] = prefix;
-
-    // hide incompatible operator boxes
-    this.visibleOperatorsBoxes = prefix !== '07';
   }
 
   selectOperator(operator: string) {
