@@ -11,6 +11,10 @@ import { StorageService } from '../service/storage.service';
 export class FormComponent {
   activePrefix: string | null = null;
   activeOperator: string | null = null;
+  visibleOperatorsBoxes = true;
+
+  isComplete = false;
+  isResumption = false;
 
   rows = [
     { id: 1, boxes: ['', '', '', '', ''], locked: 2 },
@@ -26,6 +30,9 @@ export class FormComponent {
     this.reset();
     this.activePrefix = prefix;
     this.rows[0].boxes[0] = prefix;
+
+    // hide incompatible operator boxes
+    this.visibleOperatorsBoxes = prefix !== '07';
   }
 
   selectOperator(operator: string) {
@@ -33,17 +40,14 @@ export class FormComponent {
       alert('Please select a prefix first');
       return;
     }
+    if (this.isComplete) return;
+
     this.rows[2].boxes = ['', ''];
     this.activeOperator = operator;
     this.rows[0].boxes[1] = operator;
   }
 
   onKeyPressed(digit: string) {
-
-    if (this.rows[0].boxes.every(b => (b || '').length === 2)) {
-      // all number boxes filled
-      return;
-    }
 
     if (digit === 'BACK') {
       this.handleBackspace();
@@ -52,6 +56,11 @@ export class FormComponent {
 
     if (!this.activePrefix) {
       alert('Please select a prefix first');
+      return;
+    }
+
+    if (this.rows[0].boxes.every(b => (b || '').length === 2)) {
+      // all number boxes filled
       return;
     }
 
@@ -82,16 +91,7 @@ export class FormComponent {
     const operatorReady = this.activeOperator || (this.rows[0].boxes[1]?.length === 2);
 
     if (numberReady && operatorReady) {
-      const duration = this.timer.stop();
-      const prefix = this.activePrefix;
-      const operator = this.activeOperator || this.rows[0].boxes[1];
-      const rest = mainRow.boxes.slice(startIndex).join('');
-      const result = `${prefix}${operator}${rest}`;
-
-      this.storage.saveEntry(result, duration);
-      this.lastResult = { phoneNumber: result, duration };
-
-      // alert(`✅ ${result} entered in ${duration.toFixed(2)}s`);
+      this.completeEntry();
     }
   }
 
@@ -106,6 +106,13 @@ export class FormComponent {
   handleBackspace() {
     const mainRow = this.rows[0];
     const startIndex = mainRow.locked;
+
+    // if user deletes after completion, reopen entry
+    if (this.isComplete) {
+      this.isComplete = false;
+      this.isResumption = true;
+
+    }
 
     // remove from number boxes first
     for (let i = mainRow.boxes.length - 1; i >= startIndex; i--) {
@@ -125,7 +132,26 @@ export class FormComponent {
     else { // backspace prefix
       this.activePrefix = null;
       this.rows[0].boxes[0] = '';
+      this.visibleOperatorsBoxes = true;
     }
+  }
+
+  completeEntry() {
+    const mainRow = this.rows[0];
+    const startIndex = mainRow.locked;
+    const duration = this.timer.getElapsed();
+
+    const prefix = this.activePrefix!;
+    const operator = this.activeOperator || mainRow.boxes[1];
+    const rest = mainRow.boxes.slice(startIndex).join('');
+    const result = `${prefix}${operator}${rest}`;
+
+    this.isComplete = true;
+    this.lastResult = { phoneNumber: result, duration };
+
+    // Override last entry for same session
+    const ovverideLast = this.isResumption;
+    this.storage.saveEntry(result, duration, ovverideLast);
   }
 }
 
