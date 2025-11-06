@@ -30,18 +30,15 @@ export class FormComponent {
     // hide incompatible operator boxes
     this.visibleOperatorsBoxes = prefix !== '07';
     this.reset();
+    this.timer.start();
     this.activePrefix = prefix;
     this.rows[0].boxes[0] = prefix;
   }
 
   selectOperator(operator: string) {
-    if (!this.activePrefix) {
-      alert('Please select a prefix first');
-      return;
-    }
-    if (this.isComplete) return;
-
-    this.rows[2].boxes = ['', ''];
+    // Start timer when first key pressed
+    if (!this.timer.isRunning()) this.timer.start();
+    if (this.isComplete || this.rows[0].boxes[0].length < 2) return;
     this.activeOperator = operator;
     this.rows[0].boxes[1] = operator;
   }
@@ -53,10 +50,16 @@ export class FormComponent {
       return;
     }
 
-    if (!this.activePrefix) {
-      alert('Please select a prefix first');
+    if (digit === 'RESET') {
+      this.timer.stop();
+      this.reset();
       return;
     }
+
+    // if (!this.activePrefix) {
+    //   alert('Please select a prefix first');
+    //   return;
+    // }
 
     if (this.rows[0].boxes.every(b => (b || '').length === 2)) {
       // all number boxes filled
@@ -68,6 +71,17 @@ export class FormComponent {
 
     // Start timer when first key pressed
     if (!this.timer.isRunning()) this.timer.start();
+
+    if (!this.activePrefix) {
+      // no prefix selected > fill prefix box (row 1, box 1)
+      const current = mainRow.boxes[0] || '';
+
+      if (current.length < 2) {
+        mainRow.boxes[0] = current + digit;
+        this.visibleOperatorsBoxes = mainRow.boxes[0] !== '07';
+        return; // don't start filling number until prefix ready
+      }
+    }
 
     if (!this.activeOperator) {
       // no operator selected > fill custom operator (row 1, box 2)
@@ -97,9 +111,10 @@ export class FormComponent {
   reset() {
     this.activePrefix = null;
     this.activeOperator = null;
+    this.isComplete = false;
     this.rows[0].boxes = ['', '', '', '', ''];
     this.lastResult = null;
-    this.timer.start();
+    this.isResumption = false;
   }
 
   handleBackspace() {
@@ -129,9 +144,16 @@ export class FormComponent {
       this.activeOperator = null;
     }
     else { // backspace prefix
-      this.activePrefix = null;
-      this.rows[0].boxes[0] = '';
+      const cur = this.rows[0].boxes[0];
+      this.rows[0].boxes[0] = cur.slice(0, -1);
       this.visibleOperatorsBoxes = true;
+      this.activePrefix = null;
+    }
+
+    // all boxes are empty
+    if (mainRow.boxes.every(b => b === '')) {
+      this.reset();
+      this.timer.stop();
     }
   }
 
@@ -140,7 +162,7 @@ export class FormComponent {
     const startIndex = mainRow.locked;
     const duration = this.timer.getElapsed();
 
-    const prefix = this.activePrefix!;
+    const prefix = this.activePrefix || mainRow.boxes[0];
     const operator = this.activeOperator || mainRow.boxes[1];
     const rest = mainRow.boxes.slice(startIndex).join('');
     const result = `${prefix}${operator}${rest}`;
