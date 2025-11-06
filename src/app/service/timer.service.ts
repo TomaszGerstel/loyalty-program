@@ -15,6 +15,12 @@ export class TimerService {
     return parseFloat(duration.toFixed(2));
   }
 
+  getElapsed(): number {
+    if (!this.startTime) return 0;
+    const duration = (performance.now() - this.startTime) / 1000;
+    return parseFloat(duration.toFixed(2));
+  }
+
   isRunning() {
     return this.startTime !== null;
   }
