@@ -2,31 +2,47 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
   background: #e3f2fd;
   border-radius: 1rem;
-  padding: 1rem;
+  padding: 0.5rem;
   border: 1px solid grey;
   width: fit-content;
+  touch-action: manipulation;
 }
 
-.row {
-  display: flex;
-  gap: 0.5rem;
-}
-
-button {
-  width: 72px;
-  height: 72px;
+.keypad button {
+  border-radius: 12px;
+  width: 80px;
+  height: 80px;
   font-size: 3rem;
   line-height: 1;
   background: #e3f2fd;
   border: 0;
+  transition: transform 0.1s ease, background-color 0.1s ease;
+  touch-action: manipulation;
+  user-select: none;
+}
+
+.keypad button:active {
+  transform: scale(0.9);
+  background-color: rgba(0,0,0,0.1);
+}
+
+.row {
+  display: flex;
+  gap: 0.2rem;
 }
 
 @media (max-width: 800px) {
   button {
     width: 55px;
     height: 55px;
+  }
+}
+
+@media (max-width: 650px) {
+  .keypad button {
+    width: 86px;
+    height: 86px;
   }
 }

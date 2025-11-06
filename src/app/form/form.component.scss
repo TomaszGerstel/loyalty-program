@@ -51,6 +51,22 @@
   width: 64px;
 }
 
+// not used
+.number-pair-gap {
+  display: flex;
+  gap: 24px;
+}
+
+// not used
+.cell-gap {
+  margin-left: 16px;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+
 .result {
   text-align: center;
   margin-top: 1rem;
