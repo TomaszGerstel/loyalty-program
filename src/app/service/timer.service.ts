@@ -6,12 +6,14 @@ export class TimerService {
 
   start() {
     this.startTime = performance.now();
+    console.log("timer started");
   }
 
   stop(): number {
     if (!this.startTime) return 0;
     const duration = (performance.now() - this.startTime) / 1000;
     this.startTime = null;
+    console.log("timer stopped");
     return parseFloat(duration.toFixed(3));
   }
 

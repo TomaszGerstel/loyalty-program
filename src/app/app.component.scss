@@ -1,12 +1,50 @@
 .app-container {
-  max-width: 780px;     /* Adjust to your desired tablet width */
-  margin: 0 auto;       /* Center horizontally */
-  padding: 16px;        /* Some breathing room */
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+}
+
+.app-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 780px;
+  min-height: 600px;
+  width: 100%;
+  margin: 0 auto;
+  height: auto;
+  background: white;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  padding-bottom: 2rem;
+  box-sizing: border-box;
+  margin: 0
 }
 
 .spacer {
   flex: 1;
+}
+
+@media (max-width: 800px) and (min-width: 656px) {
+  .app-container {
+    width: 650px;
+  }
+
+  .app-content {
+    padding-left: 0;
+    padding-right: 0;
+
+  }
+}
+
+@media (max-width: 655px) {
+  .app-container {
+    width: 99vw;
+  }
 }

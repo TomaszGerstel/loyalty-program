@@ -36,9 +36,10 @@ export class FormComponent {
   }
 
   selectOperator(operator: string) {
+    // return if all filled or prefix not completed
+    if (this.isComplete || this.rows[0].boxes[0].length < 2) return;
     // Start timer when first key pressed
     if (!this.timer.isRunning()) this.timer.start();
-    if (this.isComplete || this.rows[0].boxes[0].length < 2) return;
     this.activeOperator = operator;
     this.rows[0].boxes[1] = operator;
   }
@@ -56,10 +57,7 @@ export class FormComponent {
       return;
     }
 
-    // if (!this.activePrefix) {
-    //   alert('Please select a prefix first');
-    //   return;
-    // }
+    this.resetIfEmpty();
 
     if (this.rows[0].boxes.every(b => (b || '').length === 2)) {
       // all number boxes filled
@@ -125,7 +123,6 @@ export class FormComponent {
     if (this.isComplete) {
       this.isComplete = false;
       this.isResumption = true;
-
     }
 
     // remove from number boxes first
@@ -150,7 +147,11 @@ export class FormComponent {
       this.activePrefix = null;
     }
 
-    // all boxes are empty
+    this.resetIfEmpty();
+  }
+
+  resetIfEmpty() {
+    const mainRow = this.rows[0];
     if (mainRow.boxes.every(b => b === '')) {
       this.reset();
       this.timer.stop();
