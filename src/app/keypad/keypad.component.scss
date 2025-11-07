@@ -8,12 +8,13 @@
   border: 1px solid grey;
   width: fit-content;
   touch-action: manipulation;
+  margin-right: 1.5rem;
 }
 
 .keypad button {
   border-radius: 12px;
-  width: 80px;
-  height: 80px;
+  width: 78px;
+  height: 78px;
   font-size: 3rem;
   line-height: 1;
   background: #e3f2fd;
@@ -33,16 +34,25 @@
   gap: 0.2rem;
 }
 
-@media (max-width: 800px) {
-  button {
-    width: 55px;
-    height: 55px;
+@media (max-width: 800px) and (min-width: 656px) {
+  .keypad button {
+    width: 58px;
+    height: 58px;
+    font-size: 2.4rem;
+  }
+  .keypad {
+    margin-right: 1rem;
   }
 }
 
-@media (max-width: 650px) {
+@media (max-width: 655px) {
   .keypad button {
-    width: 86px;
-    height: 86px;
+    width: 72px;
+    height: 72px;
+    font-size: 2.5rem;
   }
+  .keypad {
+    margin-right: 0;
+  }
+
 }
