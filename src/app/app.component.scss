@@ -15,8 +15,9 @@
   max-width: 780px;
   min-height: 600px;
   width: 100%;
+  min-width: 370px;
   margin: 0 auto;
-  height: auto;
+  min-height:90vh;
   background: white;
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
@@ -39,12 +40,18 @@
   .app-content {
     padding-left: 0;
     padding-right: 0;
-
   }
 }
 
 @media (max-width: 655px) {
   .app-container {
     width: 99vw;
+  }
+}
+
+@media (max-width: 365px) {
+  .app-content {
+    margin: 0 auto;
+    min-width: 365px;
   }
 }
