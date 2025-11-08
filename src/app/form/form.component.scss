@@ -37,6 +37,7 @@
 .cell.locked {
   cursor: pointer;
   background: #e3f2fd;
+  user-select: none;
 }
 
 .cell.locked:hover {

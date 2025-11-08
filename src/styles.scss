@@ -19,3 +19,8 @@ body {
   padding-right: env(safe-area-inset-right);
 }
 
+@media (max-width: 365px) {
+  body {
+    overflow-x: scroll;
+  }
+}
