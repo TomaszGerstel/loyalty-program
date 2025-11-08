@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -7,8 +7,18 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.scss'],
   standalone: false
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
   private readonly router = inject(Router)
 
   title = 'loyalty-program';
+
+  ngAfterViewInit() {
+    window.addEventListener('orientationchange', () => {
+      console.log('view loaded!');
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        document.body.style.overflowX = 'hidden';
+      }, 300);
+    });
+  }
 }
