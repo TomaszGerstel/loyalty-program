@@ -19,7 +19,7 @@ body {
 }
 
 @media (max-width: 365px) {
-  body {
+  html {
     overflow-x: scroll;
     min-width: 345px;
   }
