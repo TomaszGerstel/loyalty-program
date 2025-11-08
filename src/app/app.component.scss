@@ -51,7 +51,10 @@
 
 @media (max-width: 365px) {
   .app-content {
-    margin: 0 auto;
-    min-width: 365px;
+    min-width: 340px;
+  }
+
+  .app-container {
+    min-width: 340px;
   }
 }

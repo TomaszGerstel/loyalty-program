@@ -1,4 +1,4 @@
-.layout-container {
+.form-container {
   display: flex;
   // grid-template-columns: 2fr 1fr;
   gap: 2rem;
@@ -9,7 +9,7 @@
   text-align: center;
 }
 
-.form-panel {
+.boxes-panel {
   margin: auto;
 }
 
@@ -81,7 +81,7 @@
 }
 
 @media (max-width: 655px) {
-  .layout-container {
+  .form-container {
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -117,9 +117,16 @@
     margin-left: 1rem;
   }
 
-  .layout-container {
+  .form-container {
     padding-left: 0;
     padding-right: 0;
   }
+}
 
+@media (max-width: 365px) {
+  .cell {
+    width: 56px;
+    height: 56px;
+    font-size: 1.6rem;
+  }
 }
